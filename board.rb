@@ -4,7 +4,6 @@ load "sliding_piece.rb"
 load "stepping_piece.rb"
 require 'debugger'
 
-
 # Board.rb
 
 #  * a b c d e f g h  *
@@ -21,7 +20,7 @@ require 'debugger'
 #  * a b c d e f g h  *
 
 class Board
-  attr_accessor :grid#contains Piece or nil if no Piece
+  attr_accessor :grid s#contains Piece or nil if no Piece
 
   def initialize(setup)
     @grid = Array.new(8) { Array.new(8, nil)}
@@ -76,12 +75,6 @@ class Board
     end
   end
 
-
-
-    # None of piece
-
-
-  #Returns whether a player is in check
   def in_check?(color)
     #debugger
     king_pos = king_by_color(color).first.pos
@@ -118,12 +111,6 @@ class Board
     return @grid.flatten.compact
   end
 
-  #If the player is in check, and if none of the player's pieces
-  #have any #valid_moves, then the player is in checkmate.
-  def checkmate?(color)
-
-  end
-
   def place_piece(pos, piece)
     row, col = pos
     self.grid[row][col] = piece
@@ -144,22 +131,8 @@ class Board
 
     piece.pos = to
     self.place_piece(from, nil)
-
-    # Handle Pawn first-move case
-    # if piece.is_a?(Pawn) && piece.first_move
-    #   piece.first_move = false
-    # end
   end
 
-
-  #updates the 2d grid and also the moved piece's
-  #position
-
-  #Raises exception if no piece at start
-  # ||
-  #piece cannot move to end_pos
-
-  #Board#move should raise an exception if it would leave you in check.
   def move(start, end_pos)
 
     # piece_moves
@@ -185,18 +158,10 @@ class Board
     end
   end
 
-  ##valid_moves needs to make a move on the duped board to see
-  #if a player is left in check.
-  #Method Board#move! makes a move without checking if it is valid.
   def move!(start, end_pos)
     move_piece(start, end_pos)
   end
 
-  #should duplicate not only the Board, but
-  #the pieces on the Board
-  #Ruby's #dup method does not call dup on the instance variables,
-  #so you may need to write your own Board#dup method
-  #that will dup the individual pieces as well.
   def dup
     #after duplicating board,
     new_board = Board.new(false)

@@ -22,12 +22,6 @@ require 'debugger'
 #  -------------------
 #  * a b c d e f g h  *
 
-#constructs a Board object, that alternates between
-#players (assume two human players for now) prompting
-#them to move. The Game should handle exceptions from
-#Board#move and report them.
-
-
 class Game
   attr_accessor :board, :turn, :to_symbol, :move_hash
   attr_accessor :p1, :p2
@@ -75,13 +69,13 @@ class Game
   end
 
   def play_turn
-    # display board
     display_board
-    # prompt self.turn player for move
-    # ADD NAME HERE
+    check_for_check
+
     begin
       puts "#{self.turn}, which piece do you want to move? (letter, number)"
       move_from = parse_move(gets.chomp)
+      raise "That's not your piece!" if self.board.at(move_from).color != self.turn
 
       print "to? (letter, number)"
       move_to = parse_move(gets.chomp)
@@ -92,10 +86,11 @@ class Game
       puts e
       retry
     end
-      # using their name
-    # parse move
-    # make move
-      # handle move exceptions with begin/rescue/retry
+
+  end
+
+  def check_for_check
+    puts "Check!\n" if self.board.in_check?(self.turn)
   end
 
   def build_move_hash
@@ -145,7 +140,6 @@ class Game
   end
 
   def parse_move(pos)
-    # feed from into hash
     self.move_hash[pos]
   end
 
@@ -153,16 +147,9 @@ class Game
     self.board.move(start, end_pos)
   end
 
-  # def current_player
-  #   self.p1.name if :white == self.turn
-  #   self.p2.name if :black == self.turn
-  # end
-
 end
 
 
-#Game#play method just continuously calls play_turn
-#READ TIPS AT BOTTOM OF CHESS SPEC
 class HumanPlayer
   attr_accessor :name
 
@@ -176,8 +163,7 @@ class HumanPlayer
     puts "Please enter your name: "
     input = gets.chomp
     real_name = names.sample
-    puts "That's a nice name, but I'm gonna call you #{real_name}. You better be good at this
-    #{real_name}."
+    puts "That's a nice name, but I'm gonna call you #{real_name}.    You'd better be good at this, #{real_name}."
     return real_name
   end
 

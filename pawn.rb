@@ -2,7 +2,7 @@ load "stepping_piece.rb"
 # Pawn.rb
 
 #DO THIS LAST CUZ NED SED SO
-class Pawn < SteppingPiece
+class Pawn < Piece
   attr_accessor :first_move
 
   def initialize(pos, board, color, first_move = true)
@@ -16,7 +16,7 @@ class Pawn < SteppingPiece
 
     attack_diffs = get_valid_attack_diffs
 
-    # get the right diffs to attack and then set attacking? to true
+    # get the right diffs to attack and then set attacking to true
     if not attack_diffs.empty?
       attacking = true
       diffs = attack_diffs
@@ -34,7 +34,7 @@ class Pawn < SteppingPiece
       new_pos = get_new_pos(current_pos, diff)
 
       unless out_of_bounds?(new_pos)
-        if self.board.empty?(new_pos) && attacking
+        if !self.board.empty?(new_pos) && attacking
           piece_at_pos = self.board.at(new_pos)
           if piece_at_pos.color != self.color
               doable_moves << new_pos
@@ -49,22 +49,7 @@ class Pawn < SteppingPiece
 
   end
 
-  def get_valid_move_diffs
-    diffs = move_diffs
-
-
-
-    if self.color == :black
-      swap_colors(diffs)
-    else
-      diffs
-    end
-  end
-
   def move_diffs
-    # if not get_valid_attack_diffs.empty?
-    #   get_valid_attack_diffs #REFACTOR THIS SHIT!!!!!!!!!!!!!!!
-    # els
     if self.first_move
       [
         [-2, 0],
@@ -74,7 +59,6 @@ class Pawn < SteppingPiece
       [
         [-1, 0]
       ]
-      #move_diffs
     end
   end
 

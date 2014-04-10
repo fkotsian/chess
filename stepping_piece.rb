@@ -10,7 +10,6 @@ class SteppingPiece < Piece
 
       new_pos = get_new_pos(current_pos, diff)
 
-      # KIND OF REDUNDANT WITH UNTIL; CHECK BACK LATER
       unless out_of_bounds?(new_pos)
         if self.board.empty?(new_pos)
           doable_moves << new_pos
@@ -25,16 +24,6 @@ class SteppingPiece < Piece
       end
     end
     doable_moves
-    # # strip out nil pos's from map
-#     valid_pos = valid_pos.select! { |pos| not pos.nil? }
-#     p "Valid Positions: #{valid_pos}"
-#     # if valid_pos has only 1 pos, wrap it in [] so can use include? later
-#     if valid_pos.one?
-#       [ valid_pos ]
-#     else
-#       valid_pos
-#     end
-
   end
 
   def get_diffs
